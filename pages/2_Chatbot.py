@@ -27,7 +27,7 @@ class PDF(FPDF):
         self.ln()
 
 # 2. Configuração da API do OpenAI
-chave = st.secrets["CHAVE_API"]
+chave = st.secrets['CHAVE_API']
 client = OpenAI(api_key=chave)
 
 st.title("Chatbot - Assistente Especializado")
