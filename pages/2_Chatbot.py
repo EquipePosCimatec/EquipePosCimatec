@@ -3,7 +3,6 @@ import pandas as pd
 from fpdf import FPDF
 from datetime import datetime
 from openai import OpenAI
-import os
 
 # 1. Classe PDF personalizada com cabeçalho e rodapé
 class PDF(FPDF):
@@ -28,7 +27,7 @@ class PDF(FPDF):
         self.ln()
 
 # 2. Configuração da API do OpenAI
-chave = os.getenv('CHAVE_API')
+chave = CHAVE_API
 client = OpenAI(api_key=chave)
 
 st.title("Chatbot - Assistente Especializado")
