@@ -4,13 +4,6 @@ from fpdf import FPDF
 from datetime import datetime
 from openai import OpenAI
 import os
-from dotenv import load_dotenv
-
-# Carregue variáveis de ambiente do arquivo .env
-load_dotenv()
-
-# Acesse a chave de API usando a variável de ambiente
-chave_api = os.getenv("CHAVE_API")
 
 # 1. Classe PDF personalizada com cabeçalho e rodapé
 class PDF(FPDF):
@@ -34,9 +27,8 @@ class PDF(FPDF):
         self.multi_cell(0, 10, body)
         self.ln()
 
-
 # 2. Configuração da API do OpenAI
-chave = chave_api
+chave = os.getenv('CHAVE_API')
 client = OpenAI(api_key=chave)
 
 st.title("Chatbot - Assistente Especializado")
