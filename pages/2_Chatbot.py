@@ -28,7 +28,6 @@ class PDF(FPDF):
 
 # 2. Configuração da API do OpenAI
 chave = st.secrets["CHAVE_API"]
-client = OpenAI(api_key=chave)
 
 st.title("Chatbot - Assistente Especializado")
 
@@ -63,12 +62,11 @@ st.session_state.limiar_moderacao = limiar_moderacao
 # 7. Função para verificar a moderação usando a API da OpenAI
 def verificar_moderacao_openai(input_usuario):
     try:
-        response = client.moderations.create(input=input_usuario)
-        df = pd.DataFrame(dict(response.results[0].category_scores).items(), columns=['Category', 'Value'])
-        maior_valor = df.sort_values(by='Value', ascending=False).iloc[0]
-
-        if maior_valor['Value'] > st.session_state.limiar_moderacao:
-            return "Sua mensagem pode conter conteúdo inapropriado. Por favor, modifique sua mensagem."
+        response = client.moderations.create(
+            input=input_usuario,
+            api_key=chave  # Inclua a chave diretamente nesta chamada
+        )
+        # Restante da função...
     except Exception as e:
         print(f"Erro na moderação: {e}")
     return None
@@ -92,13 +90,11 @@ if st.session_state.especialidade and "mensagens" in st.session_state:
                 st.markdown(prompt)
             st.session_state.mensagens.append({"role": "user", "content": prompt})
 
-            mensagens_para_api = [
-                {"role": "system", "content": st.session_state.contexto}] if st.session_state.contexto else []
-            mensagens_para_api += st.session_state.mensagens
-
+            # Use a chave diretamente nesta chamada
             resposta = client.chat.completions.create(
                 model='gpt-3.5-turbo',
-                messages=mensagens_para_api
+                messages=mensagens_para_api,
+                api_key=chave
             ).choices[0].message.content
 
             with st.chat_message("system"):
