@@ -3,7 +3,6 @@ import pandas as pd
 from fpdf import FPDF
 from datetime import datetime
 from openai import OpenAI
-import os
 
 # 1. Classe PDF personalizada com cabeçalho e rodapé
 class PDF(FPDF):
